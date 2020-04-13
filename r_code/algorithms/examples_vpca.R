@@ -12,7 +12,7 @@
 # número de variables de cada una de las series será de N = 2 (series bivariantes). El número de instantes temporales considera
 # dos será de L = 20
 
-library(MTS) # Paquete para simular modelos VARMA 
+library(MTS) # Es un paquete para simular modelos VARMA 
 
 # Definimos las matrices en las que serán almacenadas las series. Las matrices M1,...,M10 constituirán el primer cluster, 
 # mientras que las matrices S1, ..., S10, el segundo cluster 
