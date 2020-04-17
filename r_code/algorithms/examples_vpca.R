@@ -12,6 +12,7 @@
 # número de variables de cada una de las series será de N = 2 (series bivariantes). El número de instantes temporales considera
 # dos será de L = 20
 
+library(MASS)
 library(MTS) # Es un paquete para simular modelos VARMA 
 
 # Definimos las matrices en las que serán almacenadas las series. Las matrices M1,...,M10 constituirán el primer cluster, 
@@ -162,8 +163,6 @@ constant <- 1/(2*pi*(1-(1/2))^2)
 coefficients_previous <- numeric(100) # Vector con tantos elementos como entradas tiene la matriz S
 
 
-# Primero fila de S
-
 a <- 1
   for (p1 in 1:5) {
     for (n1 in 1:2) {
@@ -213,11 +212,11 @@ cutree(clustering, 2) # Nos quedamos con dos clusters
 # Vamos a implementar, a continuación, Fuzzy c-means 
 
 K <- 2 # Hiperparámetro. Número de clusters 
+b <- 2 # Hiperparámetro. Coeficiente Fuzzy 
 
 # Seleccionamos aleatoriamente K centroides 
 
 vector_centroids <- sample(20, 2, replace = F)
-
 
 # Calculamos la matriz de distancias 
 
@@ -228,21 +227,71 @@ dist <- function(x, y){
 }
 
 dist_matrix <- matrix(nrow = K, ncol = 20)
-for (i in 1:20) {
-  for (k in vector_centroids) {
-    dist_matrix[which(vector_centroids == k), i] <- dist(y[[i]], y[[k]])
-  }
+# for (i in 1:20) {
+# for (k in vector_centroids) {
+#  dist_matrix[which(vector_centroids == k), i] <- dist(y[[i]], y[[k]])
+# }
   
-}
+# }
 
-rownames(dist_matrix) <- vector_centroids
+# rownames(dist_matrix) <- vector_centroids
 
 # Una vez tenemos la matriz de distancias para comenzar, vamos a realizar un determinado número de iteraciones en las que
 # calcularemos la membership matrix y actualizaremos el centro de los clusters 
 
-niter <- 100
-mem_matrix <- matrix(nrow = k, ncol = 20)
+Z <- vector(mode = 'list', length = 2)
+Z[[1]] <- Y[[vector_centroids[1]]]
+Z[[2]] <- Y[[vector_centroids[2]]]
+z <- vector(mode = 'list', length = 2)
+z[[1]] <- as.vector(Z[[1]])
+z[[2]] <- as.vector(Z[[2]])
 
-for (i in 1:niter) {
+niter <- 1
+mem_matrix <- matrix(nrow = K, ncol = 20)
+
+
+for (l in 1:niter) {
   
-}
+  
+  for (i in 1:20) {
+    for (k in 1:length(Z)) {
+      dist_matrix[k, i] <- dist(y[[i]], z[[k]])
+    }
+  }
+   for (i in 1:20) {
+     for (k in 1:length(Z)) {
+       
+      sum_k <- sum(dist_matrix[,i]^(-2/(b-1)))
+      mem_matrix[k, i] <- dist_matrix[k, i]^(-2/(b-1))/(sum_k)
+      mem_matrix[mem_matrix == 'NaN'] <- 1
+     }
+   }
+      for (i in 1:20) {
+        for (k in 1:length(Z)) {
+        z[[k]] <- numeric(10)
+        z[[k]] <- z[[k]] + mem_matrix[k, i]^b * y[[i]]
+        z[[k]] <- z[[k]]/sum(mem_matrix[k,]^b)
+        }
+      }
+    
+      
+      }
+    
+  mem_matrix
+  
+
+# Una vez implementado el algoritmo de clustering, nos interesa validar la solución obtenida 
+  
+# En primer lugar, convertimos la membership matrix en una matriz de ceros y unos 
+  
+mem_matrix[mem_matrix > 1/K] <- 1
+mem_matrix[mem_matrix < 1/K] <- 0
+ground_truth <- (c(rep(0, 10), rep (1, 10)))
+clustering <- (c(rep(0, 10), rep (1, 10)))
+
+library(dtwclust)
+cvi(ground_truth, clustering)
+
+# Adjusted Rand index, Rand index, Jaccard Index, FM index and Variation of Information. Son todos ellos medidas de
+# validación externa, pues requieren del conocimiento de las etiquetas verdaderas
+
