@@ -5,7 +5,7 @@
 # Input parameters
 
 # P: list containing MTS (variables in rows and time points in columns)
-# lambda: desired percentage of explained variability (default, 0.95)
+# lambda: desired percentage of overall explained variability (default, 0.95)
 # Warning: the numbers of MTS must be greater than number of time points
 
 vpca <- function(P, lambda = 0.95){
@@ -46,7 +46,7 @@ vpca <- function(P, lambda = 0.95){
   max_exp_var <- max(exp_var)
   
   for (i in 1 : N) {
-    Fscores[[i]] <- pc[[i]]$x[, 1 : max_exp_var] # Computing scores matrixes
+    Fscores[[i]] <- pc[[i]]$x[, 1 : max_exp_var] # Computing scores matrices
   }
   
   for (i in 1 : M) {
