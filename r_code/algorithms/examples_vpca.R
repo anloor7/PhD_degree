@@ -222,7 +222,7 @@ vector_centroids <- sample(20, 2, replace = F)
 
 # Para ello, vamos a construir, en primer lugar, una función que calcule la distancia que estamos considerando
 
-dist <- function(x, y){
+dist_fun <- function(x, y){
   sqrt((x-y) %*% S %*% (x-y))
 }
 
@@ -255,7 +255,7 @@ for (l in 1:niter) {
   
   for (i in 1:20) {
     for (k in 1:length(Z)) {
-      dist_matrix[k, i] <- dist(y[[i]], z[[k]])
+      dist_matrix[k, i] <- dist_fun(y[[i]], z[[k]])
     }
   }
    for (i in 1:20) {
@@ -286,8 +286,17 @@ for (l in 1:niter) {
   
 mem_matrix[mem_matrix > 1/K] <- 1
 mem_matrix[mem_matrix < 1/K] <- 0
-ground_truth <- (c(rep(0, 10), rep (1, 10)))
-clustering <- (c(rep(0, 10), rep (1, 10)))
+mem_matrix
+
+clustering <- numeric(ncol(mem_matrix_trans2))
+
+for (j in 1 : length(clustering)) {
+  clustering[j] <- which.max(mem_matrix[,j])
+}
+
+ground_truth <- numeric(length(Y))
+ground_truth[1 : 10] <- 0
+ground_truth[11 : 20] <- 1
 
 library(dtwclust)
 cvi(ground_truth, clustering)
