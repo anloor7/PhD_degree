@@ -36,7 +36,7 @@ th1 = matrix(c(-0.5, 0, 0, -0.6), 2, 2)
 
 # Simulamos las series del primer cluster 
 
-# set.seed(2000)
+set.seed(2000)
 for (i in 1:10) {
  # M[[i]] <- t(VARMAsim(20, arlags = c(1), malags = c(1), phi = p1, 
              #      theta = th1, sigma = sig1)$series)
@@ -132,9 +132,9 @@ sigma2 <- cov(V2)
 
 # Reducimos la dimensión de las matrices V1 y V2 mediante componentes principales
 
-pc1 <- princomp(V1, cor = T, score = T)
+pc1 <- princomp(V1, cor = F, score = T)
 summary(pc1)
-pc2 <- princomp(V2, cor = T, score = T)
+pc2 <- princomp(V2, cor = F, score = T)
 summary(pc2)
 
 # Tomando 5 componentes principales, podemos explicar, en ambos casos, más del 90% de la variabilidad de nuestro conjunto de
