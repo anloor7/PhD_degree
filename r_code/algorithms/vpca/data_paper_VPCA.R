@@ -48,9 +48,9 @@ for (i in 1:length(P)) {
 
 # Dimensionality reduction via PCA
 
-pc1 <- princomp(V1, cor = F, score = T)
+pc1 <- princomp(V1, cor = F)
 summary(pc1)
-pc2 <- princomp(V2, cor = F, score = T)
+pc2 <- princomp(V2, cor = F)
 summary(pc2)
 
 # In order to explain, in both instances, more than 90% of variability, we choose ps = 5 principal components 
@@ -170,12 +170,12 @@ for (l in 1 : niter) {
       mem_matrix[mem_matrix == 'NaN'] <- 1
     }
   }
-  for (i in 1 : length(Y)) {
-    for (k in 1:length(Z)) {
-      z[[k]] <- numeric(10)
+  for (k in 1 : length(Z)) {
+    z[[k]] <- numeric(10)
+    for (i in 1:length(Y)) {
       z[[k]] <- z[[k]] + mem_matrix[k, i]^b * y[[i]]
-      z[[k]] <- z[[k]]/sum(mem_matrix[k,]^b)
     }
+    z[[k]] <- z[[k]]/sum(mem_matrix[k,]^b)
   }
   
   
@@ -250,7 +250,7 @@ for (j in 1 : length(Y)) {
 }
 
 library(dtwclust)
-cvi(ground_truth, clustering) # The results gets worst
+cvi(ground_truth, clustering) # The results get worst
 
 # Results with hierarchical clustering 
 
