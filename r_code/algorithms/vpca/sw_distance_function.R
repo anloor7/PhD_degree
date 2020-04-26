@@ -64,8 +64,15 @@ spatial_matrix <- function(N, ps){
 
 
 sw_distance <- function(Yi, Yj){
-  n <- nrow(Yi)
-  ps <- ncol(Yi)
+  
+  if (is.matrix(Yi)){
+    n <- nrow(Yi)
+    ps <- ncol(Yi)
+  } else {
+    n <- 1
+    ps <- length(Yi)
+  }
+  
   spatial_matrix <- spatial_matrix(N = n, ps = ps)
   yi <- as.vector(Yi)
   yj <- as.vector(Yj)
