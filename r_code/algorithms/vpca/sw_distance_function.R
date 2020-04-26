@@ -63,8 +63,10 @@ spatial_matrix <- function(N, ps){
 
 
 
-sw_distance <- function(Yi, Yj, spatial_matrix){
-  
+sw_distance <- function(Yi, Yj){
+  n <- nrow(Yi)
+  ps <- ncol(Yi)
+  spatial_matrix <- spatial_matrix(N = n, ps = ps)
   yi <- as.vector(Yi)
   yj <- as.vector(Yj)
   sqrt((yi - yj) %*% spatial_matrix %*% (yi - yj))

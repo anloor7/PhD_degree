@@ -48,7 +48,6 @@ fuzzy_cm <- function(X, K, b, niter, tol){
     J[t] = sum(mem_matrix^b*dist_matrix^2)
     
     if (J[t] - J[t-1] < tol){
-      
       break
     }
     
@@ -57,4 +56,5 @@ fuzzy_cm <- function(X, K, b, niter, tol){
   }
   mem_matrix
 }
+
 
