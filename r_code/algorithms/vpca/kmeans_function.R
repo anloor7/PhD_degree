@@ -80,5 +80,4 @@ km_mts <- function(Y, K, niter = 1000, tol = 0.01, dis){
   # c
   
   clus_matrix
-  
 }

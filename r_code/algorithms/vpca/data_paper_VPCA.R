@@ -258,3 +258,25 @@ load('hierar_clust.RData')
 hierarch_clust <- cutree(clustering, 10)
 cvi(ground_truth, hierarch_clust)
 
+
+# Implementation of K-means algorithm with VPCA 
+
+library(TSdist)
+u <- km_mts(Y = Y, K = 10, niter = 500, tol = 0.01, dis = sw_distance)
+clustering <- fuzzytocrisp(u)
+
+library(ClusterR)
+library(dtwclust)
+cvi(ground_truth, clustering)
+external_validation(ground_truth, clustering, summary_stats = T)
+
+
+
+
+u <- fcm_mts(Y = Y, K = 10, niter = 100, tol = 0.01, dis = dist_pca)
+clustering <- fuzzytocrisp(u)
+
+library(ClusterR)
+library(dtwclust)
+cvi(ground_truth, clustering)
+external_validation(ground_truth, clustering, summary_stats = T)

@@ -38,13 +38,13 @@ source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git
 source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git_hub/PhD_degree/r_code/algorithms/vpca/fuzzytocrisp_function.R')
 source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git_hub/PhD_degree/r_code/algorithms/vpca/kmeans_function.R')
 
-# Dimensionality reductions vpca
+# Dimensionality reduction vpca
 
 Y <- vpca(M, lambda = 0.95)
 
 # Implementation of fuzzy c-means algorithm
 
-u <- fcm_mts(Y = Y, K = 15, niter = 20, b = 2, tol = 0.01, dis = sw_distance)
+u <- fcm_mts(Y = Y, K = 15, niter = 15, b = 2, tol = 0.01, dis = dist_matrix)
 clustering <- fuzzytocrisp(u)
 
 ground_truth <- numeric(length(Y))
@@ -53,13 +53,17 @@ for (j in 1 : length(Y)) {
   ground_truth[j] <- S[[j]][1, 46]
 }
 
+library(TSdist)
+library(ClusterR)
 library(dtwclust)
 cvi(ground_truth, clustering)
+external_validation(ground_truth, clustering, summary_stats = T)
 
 
 # Implementation of K-means algorithm
 
-u <- km_mts(Y = Y, K = 15, niter = 40, tol = 0.01, dis = sw_distance)
+Y <- vpca(M, lambda = 0.95)
+u <- km_mts(Y = Y, K = 15, niter = 40, tol = 0.01, dis = dist_matrix)
 clustering <- fuzzytocrisp(u)
 
 ground_truth <- numeric(length(Y))
@@ -70,6 +74,7 @@ for (j in 1 : length(Y)) {
 
 library(dtwclust)
 cvi(ground_truth, clustering)
+external_validation(ground_truth, clustering, summary_stats = T)
 
 # Implementation of K-means with another distance
 
@@ -91,7 +96,7 @@ for (j in 1 : length(Y)) {
 
 library(dtwclust)
 cvi(ground_truth, clustering)
-
+external_validation(ground_truth, clustering, summary_stats = T)
 
 # Implementation of K-means with another distance
 
@@ -119,6 +124,7 @@ for (j in 1 : length(Y)) {
 
 library(dtwclust)
 cvi(ground_truth, clustering)
+external_validation(ground_truth, clustering, summary_stats = T)
 
 # Implementation of fuzzy C-means with this distance 
 
