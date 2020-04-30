@@ -106,4 +106,3 @@ mc2pca <- function(X, K, lambda, niter, tol){
 }
 
 
-

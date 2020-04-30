@@ -9,6 +9,7 @@
 # tol: threshold for termination step 
 # dis : function to compute distance between two MTS objects 
 
+source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git_hub/PhD_degree/r_code/algorithms/vpca/fuzzytocrisp_function.R')
 
 km_mts <- function(Y, K, niter = 1000, tol = 0.01, dis){
   
@@ -80,4 +81,5 @@ km_mts <- function(Y, K, niter = 1000, tol = 0.01, dis){
   # c
   
   clus_matrix
+  fuzzytocrisp(clus_matrix)
 }

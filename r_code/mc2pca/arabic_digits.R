@@ -36,7 +36,7 @@ for (i in 1 : 10) {
 
 # Lets perform mc2pca over the dataset and evaluate the results 
 
-clustering <- mc2pca(X, 10, lambda = 0.80, niter = 100, tol = 0.01)
+clustering <- mc2pca(X, 10, lambda = 0.90, niter = 300, tol = 0.01)
 
 external_validation(clustering, ground_truth, summary_stats = T)
 
