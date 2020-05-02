@@ -72,7 +72,7 @@ fcm_mts <- function(Y, K, b = 2, niter = 1000, tol = 0.01, dis){
     
   }
   
-  
+ 
 # c <- vector(mode = 'list', length = 2)
 # c[[1]] <- mem_matrix
 # c[[2]] <- l

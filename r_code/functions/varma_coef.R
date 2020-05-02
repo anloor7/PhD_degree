@@ -11,7 +11,7 @@ varma_coefs <- function(X){
   
   for (i in 1 : n){
   varmax <- VARMA(X[[i]], p = 1, q = 1)
-  coefx <- c(as.vector(varmax$Phi), as.vector(varmax$Theta))
+  coefx <- c(as.vector(varmax$Phi), as.vector(varmax$Theta), as.vector(varmax$Sigma))
   coefs[[i]] <- coefx
   }
   coefs

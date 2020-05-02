@@ -3,8 +3,9 @@
 # Lets perform some analyses regarding distance between varma. The first is going to be based on simulations, and the second, on the 
 # Libras dataset 
 
-source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git_hub/PhD_degree/r_code/algorithms/vpca/kmeans_function.R')
-source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git_hub/PhD_degree/r_code/algorithms/vpca/varma_coef.R')
+source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git_hub/PhD_degree/r_code/functions/kmeans_function.R')
+source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git_hub/PhD_degree/r_code/functions/varma_coef.R')
+
 
 # Simulation of 20 VARMA(1, 1) processes stemming from two different model generators
 
@@ -49,3 +50,21 @@ for (i in 1:length(S)) {
 vc <- varma_coefs(M)
 clustering <- km_mts(vc, K = 15, niter = 300, tol = 0.01, dis = EuclideanDistance)
 external_validation(ground_truth, clustering, summary_stats = T)
+
+
+# Simulations of the second experiment of Baragona 
+
+source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git_hub/PhD_degree/r_code/varma/simulations_baragona.R')
+
+time <- system.time(vc <- varma_coefs(experiment2))
+
+b <- numeric()
+
+for (i in 1 : 200) {
+clustering <- km_mts(vc, K = 3, niter = 700, tol = 0.01, dis = EuclideanDistance)
+b[i] <- external_validation(ground_truth2, clustering, method = "jaccard_index")
+}
+
+mean(b)
+
+# Internal validity indexes 
