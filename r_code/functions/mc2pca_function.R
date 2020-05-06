@@ -6,7 +6,7 @@
 
 # First function: cpca
 # Input:
-# Y: list containing a list of covariance matrices of MTS (taking into account the variables)
+# sigma: list containing a list of covariance matrices of MTS (taking into account the variables)
 # lambda: percentage of explained variability
 
 cpca <- function(sigma, lambda = 0.95){
