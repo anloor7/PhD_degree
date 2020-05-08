@@ -15,7 +15,7 @@ temp_df <- NULL
 n <- nrow(df_series)
 c <- ncol(df_series)
 for(i in 1 : c){
-  temp_df <- data.frame(x = 1:n, y = df_series[,i], col = rep(i : i, each=10))
+  temp_df <- data.frame(x = 1:n, y = df_series[,i], col = rep(i , n))
   df <- rbind(df,temp_df)} 
 
 ggplot(df, aes(x = x, y = y, group = col, colour = factor(col))) + geom_line() + xlab('Time') +

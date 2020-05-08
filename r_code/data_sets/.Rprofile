@@ -12,6 +12,7 @@ library(clusterCrit)
 library(ClusterR)
 library(profvis)
 library(zeallot)
+library(parallel)
 
 
 source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git_hub/PhD_degree/r_code/functions/fuzzy_function_mts.R')
@@ -24,7 +25,8 @@ source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git
 source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git_hub/PhD_degree/r_code/functions/listTomatrix.R')
 source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git_hub/PhD_degree/r_code/functions/mc2pca_function.R')
 source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git_hub/PhD_degree/r_code/functions/mts_plot_function.R')
-
+source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git_hub/PhD_degree/r_code/functions/multivariate_dtw_function.R')
+source('/Users/angellopezoriona/Library/Mobile Documents/com~apple~CloudDocs/git_hub/PhD_degree/r_code/functions/qaf_function.R')
 }
 
 .Last = function(){

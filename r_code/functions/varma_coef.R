@@ -1,6 +1,7 @@
 
 
-# Given a list of MTS, we fit a VARMA(1, 1) model each one, and get the 8-dimensional vector containing the coefficients
+# Given a list of bivariate MTS, we fit a VARMA(1) model each one, and get the 8-dimensional vector containing
+# the coefficients and AIC and BIC criteria 
 
 library(MTS)
 
@@ -11,9 +12,10 @@ varma_coefs <- function(X){
   n <- length(X)
   
   for (i in 1 : n){
-  varmax <- VARMA(X[[i]], p = 1, q = 0)
-  coefx <- c(as.vector(varmax$Phi), as.vector(varmax$Theta), as.vector(varmax$Sigma))
+  varmax <- VARMA(X[[i]], p = 1)
+  coefx <- c(as.vector(varmax$coef), varmax$aic, varmax$bic)
   coefs[[i]] <- coefx
   }
   coefs
 }
+

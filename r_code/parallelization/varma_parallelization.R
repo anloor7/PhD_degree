@@ -22,10 +22,10 @@ library(parallel)
 n <- 7 # Number of cores 
 
 c1 <- makeCluster(n) # Making a cluster object
-clusterExport(c1, c('varma_coeff', 'varmalist'))
+clusterExport(c1, c('varma_coefs', 'varmalist'))
 
 
-time <- system.time(v <- parLapply(c1, varmalist, varma_coeff))
+time <- system.time(v <- parLapply(c1, varmalist, varma_coefs))
 time # 38.3 seconds
 stopCluster(c1)
 
