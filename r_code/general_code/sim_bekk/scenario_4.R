@@ -11,28 +11,28 @@ cluster4 <- list()
 set.seed(1234)
 
 for (i in 1 : 100) {
-  simulated = simulateBEKK(3, 1500, c(1, 1), params = c(0.1, 0.1, 0.1, 0, 0, 0, 0.3, 0, 0, 0.4, 0, 0, 0.2, 0, 0, 0, 0,
+  simulated = simulateBEKK(3, 500, c(1, 1), params = c(0.1, 0.1, 0.1, 0, 0, 0, 0.3, 0, 0, 0.4, 0, 0, 0.2, 0, 0, 0, 0,
                                                         0, 0, 0, 0, 0, 0, 0))
   series <- simulated$eps
   cluster1[[i]] <- cbind(as.vector(series[[1]]), as.vector(series[[2]]), as.vector(series[[3]]))
 }
 
 for (i in 1 : 100) {
-  simulated = simulateBEKK(3, 1500, c(1, 1), params = c(0.1, 0.1, 0.1, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, -0.5, 0, 0, 0,
+  simulated = simulateBEKK(3, 500, c(1, 1), params = c(0.1, 0.1, 0.1, 0, 0, 0, 0.7, 0, 0, 0, 0, 0, 0, -0.5, 0, 0, 0,
                                                         0, 0, 0.2, 0, 0, 0, 0))
   series <- simulated$eps
   cluster2[[i]] <- cbind(as.vector(series[[1]]), as.vector(series[[2]]), as.vector(series[[3]]))
 }
 
 for (i in 1 : 100) {
-  simulated = simulateBEKK(3, 1500, c(1, 1), params = c(0.1, 0.1, 0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5,
+  simulated = simulateBEKK(3, 500, c(1, 1), params = c(0.1, 0.1, 0.1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5,
                                                         0, 0.3, 0, 0, 0, 0.1, 0))
   series <- simulated$eps
   cluster3[[i]] <- cbind(as.vector(series[[1]]), as.vector(series[[2]]), as.vector(series[[3]]))
 }
 
 for (i in 1 : 100) {
-  simulated = simulateBEKK(3, 1500, c(1, 1), params = c(0.1, 0.1, 0.1, 0, -0.4, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0,
+  simulated = simulateBEKK(3, 500, c(1, 1), params = c(0.1, 0.1, 0.1, 0, -0.4, 0, 0, 0, 0, 0, 0.5, 0, 0, 0, 0, 0, 0,
                                                         0.7, 0, 0, 0, 0, 0, 0))
   series <- simulated$eps
   cluster4[[i]] <- cbind(as.vector(series[[1]]), as.vector(series[[2]]), as.vector(series[[3]]))
@@ -93,7 +93,14 @@ max(listTomatrix(b))
 
 
 
+# Wavelets 
 
+J <- 6 # number of scales (see Table 3, page 45, in D'urso and Maharaj 2012)
+wf <- "d4"
+features <- lapply(cluster, wavelet_features, wf = wf, J = J) 
+dis_matrix <- proxy::dist(features, wave_dist)  
+clustering <- pam(dis_matrix, 4)$cluster
+external_validation(ground_truth, clustering)
 
 
 

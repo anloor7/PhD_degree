@@ -10,26 +10,26 @@ phi_c2 <- matrix(c(0.4, 0, 0.3, 0.2, 0.4, 0, 0, 0.4, 0.2), nrow = 3)
 sigma_c2 <- sigma_c1
 
 
-for (i in 1 : 20) {
-  cluster1[[i]] <- VARMAsim(150, arlags = 1, phi = phi_c1, sigma = sigma_c1)$series
+for (i in 1 : 5) {
+  cluster1[[i]] <- VARMAsim(2000, arlags = 1, phi = phi_c1, sigma = sigma_c1)$series
 }
 
-for (i in 1 : 20) {
-  cluster2[[i]] <- VARMAsim(150, arlags = 1, phi = phi_c2, sigma = sigma_c2)$series
+for (i in 1 : 5) {
+  cluster2[[i]] <- VARMAsim(2000, arlags = 1, phi = phi_c2, sigma = sigma_c2)$series
 }
 
 cluster <- c(cluster1, cluster2)
 
 # Ground truth 
 
-ground_truth <- c(rep(1, 20), rep(2, 20))
+ground_truth <- c(rep(1, 5), rep(2, 5))
 
 
 # Distance matrix
 
-dis_matrix <- matrix(0, 40, 40)
-for (i in 1 : 40) {
-  for (j in 1 : 40) {
+dis_matrix <- matrix(0, 10, 10)
+for (i in 1 : 10) {
+  for (j in 1 : 10) {
     dis_matrix[i, j] <- j_divergence(cluster[[i]], cluster[[j]])
   }
 }

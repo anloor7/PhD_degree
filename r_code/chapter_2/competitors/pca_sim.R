@@ -10,19 +10,19 @@ phi_c2 <- matrix(c(0.4, 0, 0.3, 0.2, 0.4, 0, 0, 0.4, 0.2), nrow = 3)
 sigma_c2 <- sigma_c1
 
 
-for (i in 1 : 500) {
-  cluster1[[i]] <- VARMAsim(500, arlags = 1, phi = phi_c1, sigma = sigma_c1)$series
+for (i in 1 : 20) {
+  cluster1[[i]] <- VARMAsim(1000, arlags = 1, phi = phi_c1, sigma = sigma_c1)$series
 }
 
-for (i in 1 : 500) {
-  cluster2[[i]] <- VARMAsim(500, arlags = 1, phi = phi_c2, sigma = sigma_c2)$series
+for (i in 1 : 20) {
+  cluster2[[i]] <- VARMAsim(1000, arlags = 1, phi = phi_c2, sigma = sigma_c2)$series
 }
 
 cluster <- c(cluster1, cluster2)
 
 # Ground truth 
 
-ground_truth <- c(rep(1, 500), rep(2, 500))
+ground_truth <- c(rep(1, 20), rep(2, 20))
 
 
 # Distance matrix
@@ -53,5 +53,9 @@ external_validation(ground_truth, clustering1)
 
 # K-means 
 
-clustering1 <- km_mts_ss(cluster, 2)
-ev(ground_truth, clustering1)
+clustering2 <- km_mts_ss(cluster, 2)
+ev(ground_truth, clustering2)
+
+clustering2 <- kmeans(gamma, 2)$cluster
+external_validation(ground_truth, clustering2)
+

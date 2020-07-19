@@ -11,19 +11,19 @@ cluster3 <- list()
 set.seed(1234)
 
 for (i in 1 : 100) {
-  simulated = simulateBEKK(2, 1500, c(1, 1), params = rep(0.1, 11))
+  simulated = simulateBEKK(2, 500, c(1, 1), params = rep(0.1, 11))
   series <- simulated$eps
   cluster1[[i]] <- cbind(as.vector(series[[1]]), as.vector(series[[2]]))
 }
 
 for (i in 1 : 100) {
-  simulated = simulateBEKK(2, 1500, c(1, 1), params = rep(0.2, 11))
+  simulated = simulateBEKK(2, 500, c(1, 1), params = rep(0.2, 11))
   series <- simulated$eps
   cluster2[[i]] <- cbind(as.vector(series[[1]]), as.vector(series[[2]]))
 }
 
 for (i in 1 : 100) {
-  simulated = simulateBEKK(2, 1500, c(1, 1), params = rep(0.3, 11))
+  simulated = simulateBEKK(2, 500, c(1, 1), params = rep(0.3, 11))
   series <- simulated$eps
   cluster3[[i]] <- cbind(as.vector(series[[1]]), as.vector(series[[2]]))
 }
@@ -86,7 +86,14 @@ max(listTomatrix(b))
 
 
 
+# Wavelets 
 
+J <- 6 # number of scales (see Table 3, page 45, in D'urso and Maharaj 2012)
+wf <- "d4"
+features <- lapply(cluster, wavelet_features, wf = wf, J = J) 
+dis_matrix <- proxy::dist(features, wave_dist)  
+clustering <- pam(dis_matrix, 3)$cluster
+external_validation(ground_truth, clustering)
 
 
 

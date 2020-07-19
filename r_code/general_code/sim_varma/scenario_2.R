@@ -72,6 +72,10 @@ max(listTomatrix(b))
 # Performing k-means quantile coherence (real-imaginary)
 
 coherence2 <- listTomatrix(lapply(cluster, quantile_coherence_re_im))
+dist_matrix <- proxy::dist(coherence2, EuclideanDistance)
+clustering <- pam(dis_matrix, K)$cluster
+external_validation(ground_truth, clustering)
+
 coherence2l <- list(length = 10) 
 
 for (i in 1 : 10) {

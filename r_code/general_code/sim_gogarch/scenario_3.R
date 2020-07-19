@@ -4,14 +4,14 @@
 
 # Comparing QAF, QC1 and QC2, scenario 1 
 
-a1 <- garch.sim(alpha = c(0.01, 0.1), beta = 0.8, n = 8000)
-b1 <- garch.sim(alpha = c(0.01, 0.8), beta = 0.1, n = 8000)
+a1 <- garch.sim(alpha = c(0.01, 0.1), beta = 0.8, n = 20000)
+b1 <- garch.sim(alpha = c(0.01, 0.8), beta = 0.1, n = 20000)
 df1 <- cbind(a1, b1)
-a2 <- garch.sim(alpha = c(0.01, 0.3), beta = 0.3, n = 8000)
-b2 <- garch.sim(alpha = c(0.01, 0.4), beta = 0.5, n = 8000)
+a2 <- garch.sim(alpha = c(0.01, 0.3), beta = 0.3, n = 20000)
+b2 <- garch.sim(alpha = c(0.01, 0.4), beta = 0.5, n = 20000)
 df2 <- cbind(a2, b2)
-a3 <- garch.sim(alpha = c(0.01, 0.9), beta = 0.05, n = 8000)
-b3 <- garch.sim(alpha = c(0.01, 0.1), beta = 0.1, n = 8000)
+a3 <- garch.sim(alpha = c(0.01, 0.9), beta = 0.05, n = 20000)
+b3 <- garch.sim(alpha = c(0.01, 0.1), beta = 0.1, n = 20000)
 df3 <- cbind(a3, b3)
 
 cluster1 <- list()
@@ -102,3 +102,15 @@ for (i in 1 : 20) {
 b <- numeric()
 b <- parLapply(c1, coherence2l, kmeans_mc_av_ari_scenario1)
 max(listTomatrix(b))
+
+
+# Wavelets 
+
+J <- 6 # number of scales (see Table 3, page 45, in D'urso and Maharaj 2012)
+wf <- "d4"
+features <- lapply(cluster, wavelet_features, wf = wf, J = J) 
+dis_matrix <- proxy::dist(features, wave_dist)  
+clustering <- pam(dis_matrix, 3)$cluster
+external_validation(ground_truth, clustering)
+
+

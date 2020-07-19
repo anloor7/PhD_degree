@@ -125,7 +125,7 @@ qaf_mts_coefs_xy <- function(X){
 # By considering separately the quantiles of X and Y
 
 
-qaf_uts_coefs_xy_sep <- function(X, Y, levels = c(0.1, 0.5, 0.9), l = 1) {
+qaf_uts_coefs_xy_sep <- function(X, Y, levels = seq(0.1, 0.9, 0.4), l = 1) {
   
   k <- length(levels)
   nx <- length(X)

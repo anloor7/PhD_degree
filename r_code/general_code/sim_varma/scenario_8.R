@@ -2,6 +2,9 @@
 
 # Comparing QAF, QC1 and QC2. Scenario 8. 
 
+n <- 20 # Number of series per cluster
+l <- 400 # Length
+K <- 4
 
 cluster1 <- list()
 cluster2 <- list()
@@ -19,27 +22,27 @@ sigma_c4 <- sigma_c1
 
 
 set.seed(1234)
-for (i in 1 : 50) {
-  cluster1[[i]] <- VARMAsim(200, malags = 1, theta = theta_c1, sigma = sigma_c1)$series
+for (i in 1 : n) {
+  cluster1[[i]] <- VARMAsim(l, malags = 1, theta = theta_c1, sigma = sigma_c1)$series
 }
 
-for (i in 1 : 50) {
-  cluster2[[i]] <- VARMAsim(200, malags = 1, theta = theta_c2, sigma = sigma_c2)$series
+for (i in 1 : n) {
+  cluster2[[i]] <- VARMAsim(l, malags = 1, theta = theta_c2, sigma = sigma_c2)$series
 }
 
-for (i in 1 : 50) {
-  cluster3[[i]] <- VARMAsim(200, arlags = 1, phi = phi_c3,
+for (i in 1 : n) {
+  cluster3[[i]] <- VARMAsim(l, arlags = 1, phi = phi_c3,
                             sigma = sigma_c3)$series
 }
 
-for (i in 1 : 50) {
-  cluster4[[i]] <- VARMAsim(200, arlags = 1, phi = phi_c4,
+for (i in 1 : n) {
+  cluster4[[i]] <- VARMAsim(l, arlags = 1, phi = phi_c4,
                             sigma = sigma_c4)$series
 }
 
 
 cluster <- c(cluster1, cluster2, cluster3, cluster4)
-ground_truth <- c(rep(1, 50), rep(2, 50), rep(3, 50), rep(4, 50))
+ground_truth <- c(rep(1, n), rep(2, n), rep(3, n), rep(4, n))
 
 
 # Parallelization 
@@ -80,6 +83,9 @@ max(listTomatrix(b))
 # Performing k-means quantile coherence (real-imaginary)
 
 coherence2 <- listTomatrix(lapply(cluster, quantile_coherence_re_im))
+dis_matrix <- proxy::dist(coherence2, EuclideanDistance)  
+clustering <- pam(dis_matrix, K)$cluster
+external_validation(ground_truth, clustering)
 coherence2l <- list(length = 20) 
 
 for (i in 1 : 20) {
@@ -89,4 +95,20 @@ for (i in 1 : 20) {
 b <- numeric()
 b <- parLapply(c1, coherence2l, kmeans_mc_av_ari_scenario2)
 max(listTomatrix(b))
+
+  
+J <- 6 # number of scales (see Table 3, page 45, in D'urso and Maharaj 2012)
+wf <- "d4"
+features <- lapply(cluster, wavelet_features, wf = wf, J = J) 
+dis_matrix <- proxy::dist(features, wave_dist)  
+clustering <- pam(dis_matrix, K)$cluster
+external_validation(ground_truth, clustering)
+
+# Alonso 
+
+features <- listTomatrix(lapply(cluster, gcc_features_mts))
+dis_matrix <- proxy::dist(features, EuclideanDistance)
+clustering <- pam(dis_matrix, K)$cluster
+external_validation(ground_truth, clustering)
+
 

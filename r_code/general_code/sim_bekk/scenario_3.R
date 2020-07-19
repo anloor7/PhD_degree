@@ -96,7 +96,14 @@ c <- kmeans(coherence2, 4)$cluster
 external_validation(ground_truth, c)
 
 
+# Wavelets 
 
+J <- 6 # number of scales (see Table 3, page 45, in D'urso and Maharaj 2012)
+wf <- "d4"
+features <- lapply(cluster, wavelet_features, wf = wf, J = J) 
+dis_matrix <- proxy::dist(features, wave_dist)  
+clustering <- pam(dis_matrix, 4)$cluster
+external_validation(ground_truth, clustering)
 
 
 

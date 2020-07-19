@@ -32,9 +32,9 @@ mvspec <- dccspec(model, dccOrder = c(1, 1), model = "DCC", distribution = # Def
 set.seed(1234)
 cluster1 <- list()
 
-for (i in 1 : 100) {
+for (i in 1 : 5) {
   
-  sim <- dccsim(mvspec, n.sim = 1000, preQ = diag(4), Qbar = diag(4), Nbar = diag(4))
+  sim <- dccsim(mvspec, n.sim = 1500, preQ = diag(4), Qbar = diag(4), Nbar = diag(4))
   cluster1[[i]] <- slot(sim, 'msim')[[4]][[1]] # Simulated series 
   
 }
@@ -53,12 +53,12 @@ uspec <- ugarchspec(variance.model = list(model = "fGARCH", submodel = 'GARCH', 
 model <- multispec(replicate(4,uspec)) # Replication of eGarch model for the four variables 
 vectormvspec <- list(dcca1 = 0.08, dccb1 = 0.9) # Parameters of DCC model 
 mvspec <- dccspec(model, dccOrder = c(1, 1), model = "DCC", distribution = # Defining DCC model 
-                    "mvnorm", fixed.pars = vectormvspec)
+                    "mvt", fixed.pars = vectormvspec)
 cluster2 <- list()
 
-for (i in 1 : 100) {
+for (i in 1 : 5) {
   
-  sim <- dccsim(mvspec, n.sim = 1000, preQ = diag(4), Qbar = diag(4), Nbar = diag(4))
+  sim <- dccsim(mvspec, n.sim = 1500, preQ = diag(4), Qbar = diag(4), Nbar = diag(4))
   cluster2[[i]] <- slot(sim, 'msim')[[4]][[1]] # Simulated series 
   
 }
@@ -79,15 +79,15 @@ mvspec <- dccspec(model, dccOrder = c(1, 1), model = "DCC", distribution = # Def
                     "mvnorm", fixed.pars = vectormvspec)
 cluster3 <- list()
 
-for (i in 1 : 100) {
+for (i in 1 : 5) {
   
-  sim <- dccsim(mvspec, n.sim = 1000, preQ = diag(4), Qbar = diag(4), Nbar = diag(4))
+  sim <- dccsim(mvspec, n.sim = 1500, preQ = diag(4), Qbar = diag(4), Nbar = diag(4))
   cluster3[[i]] <- slot(sim, 'msim')[[4]][[1]] # Simulated series 
   
 }
 
 cluster <- c(cluster1, cluster2, cluster3)
-ground_truth <- c(rep(1, 100), rep(2, 100), rep(3, 100))
+ground_truth <- c(rep(1, 5), rep(2, 5), rep(3, 5))
 
 
 # Parallelization 
@@ -142,3 +142,18 @@ b <- numeric()
 b <- parLapply(c1, coherencel, kmeans_mc_av_ari_scenario1)
 mean(listTomatrix(b))
 
+# Wavelets 
+
+J <- 6 # number of scales (see Table 3, page 45, in D'urso and Maharaj 2012)
+wf <- "d4"
+features <- lapply(cluster, wavelet_features, wf = wf, J = J) 
+dis_matrix <- proxy::dist(features, wave_dist)  
+clustering <- pam(dis_matrix, 3)$cluster
+external_validation(ground_truth, clustering)
+
+# Alonso 
+
+features <- listTomatrix(lapply(cluster, gcc_features_mts))
+dis_matrix <- proxy::dist(features, EuclideanDistance)
+clustering <- pam(dis_matrix, 3)$cluster
+external_validation(ground_truth, clustering)

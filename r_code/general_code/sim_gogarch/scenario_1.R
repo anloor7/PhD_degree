@@ -32,26 +32,26 @@ fit3 <- gogarchfit(spec = spec3, data = df3)
 set.seed(1234)
 
 
-for (i in 1 : 100) {
+for (i in 1 : 5) {
   sim1 <- gogarchsim(fit1, n.sim = 900)
   l1 <- slot(sim1, 'msim')
   cluster1[[i]] <- l1$seriesSim[[1]]
 }
 
-for (i in 1 : 100) {
+for (i in 1 : 5) {
   sim2 <- gogarchsim(fit2, n.sim = 900)
   l2 <- slot(sim2, 'msim')
   cluster2[[i]] <- l2$seriesSim[[1]]
 }
 
-for (i in 1 : 100) {
+for (i in 1 : 5) {
   sim3 <- gogarchsim(fit3, n.sim = 900)
   l3 <- slot(sim3, 'msim')
   cluster3[[i]] <- l3$seriesSim[[1]]
 }
 
 cluster <- c(cluster1, cluster2, cluster3)
-ground_truth <- c(rep(1, 100), rep(2, 100), rep(3, 100))
+ground_truth <- c(rep(1, 5), rep(2, 5), rep(3, 5))
 
 # Parallelization 
 
@@ -100,3 +100,20 @@ for (i in 1 : 20) {
 b <- numeric()
 b <- parLapply(c1, coherence2l, kmeans_mc_av_ari_scenario1)
 max(listTomatrix(b))
+
+# Wavelets 
+
+J <- 6 # number of scales (see Table 3, page 45, in D'urso and Maharaj 2012)
+wf <- "d4"
+features <- lapply(cluster, wavelet_features, wf = wf, J = J) 
+dis_matrix <- proxy::dist(features, wave_dist)  
+clustering <- pam(dis_matrix, 3)$cluster
+external_validation(ground_truth, clustering)
+
+# Alonso 
+
+features <- listTomatrix(lapply(cluster, gcc_features_mts))
+dis_matrix <- proxy::dist(features, EuclideanDistance)
+clustering <- pam(dis_matrix, 3)$cluster
+external_validation(ground_truth, clustering)
+

@@ -16,6 +16,7 @@ theta_c3 <- matrix(c(0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5), nrow = 3)
 sigma_c3 <- sigma_c1
 
 set.seed(1234)
+
 for (i in 1 : 50) {
   cluster1[[i]] <- VARMAsim(900, malags = 1, theta = theta_c1, sigma = sigma_c1)$series
 }

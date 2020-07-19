@@ -5,7 +5,8 @@
 # Input:
 # series: matrix or dataframe containing MTS object (rows being time observations and columns being variables)
 
-mts_plot <- function(series){
+
+mts_plot <- function(series, title = ''){
   df_series <- as.matrix(series)
   
   df <- NULL
@@ -16,7 +17,7 @@ mts_plot <- function(series){
     temp_df <- data.frame(x = 1:n, y = df_series[,i], col = rep(i, n))
     df <- rbind(df,temp_df)} 
   
-  ggplot(df, aes(x = x, y = y, group = col, colour = factor(col))) + geom_line(size = 0.8) + xlab('Time') +
-    ylab('Series') + theme(legend.position = "none")
+  ggplot(df, aes(x = x, y = y, group = col, colour = factor(col))) + geom_line(size = 0.8) + xlab('') +
+    ylab('') + theme(legend.position = "none") + ggtitle(title) +theme(plot.title = element_text(hjust = 0.5))
 }
 

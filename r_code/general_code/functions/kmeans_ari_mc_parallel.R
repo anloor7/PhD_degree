@@ -19,3 +19,5 @@ kmeans_mc_av_ari_scenario2 <- function(X){
   clustering <- kmeans(X, k)$cluster
   external_validation(gt, clustering)
 }
+
+

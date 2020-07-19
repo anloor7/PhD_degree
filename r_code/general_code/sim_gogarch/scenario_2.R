@@ -26,7 +26,7 @@ spec2 <- gogarchspec(ica.fix = list(A = A2, K = K2))
 fit2 <- gogarchfit(spec = spec2, data = df2)
 A3 <- rbind(c(1, 1), c(0.1, 0.5))
 K3 <- rbind(c(0, 0.5), c(0.5, 0.2))
-spec3 <- gogarchspec(ica.fix = list(A = A3, K = K·))
+spec3 <- gogarchspec(ica.fix = list(A = A3, K = K3))
 fit3 <- gogarchfit(spec = spec3, data = df3)
 
 set.seed(1234)
@@ -100,3 +100,16 @@ for (i in 1 : 20) {
 b <- numeric()
 b <- parLapply(c1, coherence2l, kmeans_mc_av_ari_scenario1)
 max(listTomatrix(b))
+
+# Wavelets 
+
+J <- 6 # number of scales (see Table 3, page 45, in D'urso and Maharaj 2012)
+wf <- "d4"
+features <- lapply(cluster, wavelet_features, wf = wf, J = J) 
+dis_matrix <- proxy::dist(features, wave_dist)  
+clustering <- pam(dis_matrix, 3)$cluster
+external_validation(ground_truth, clustering)
+
+
+
+

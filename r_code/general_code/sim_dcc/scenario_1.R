@@ -3,7 +3,7 @@
 
 # Lets perform some simulations regarding DCC models (Engle 2002)
 
-# Situation: 3 escenarios with 100 MTS  each one, each MTS containing 4 varuables. In each scenario, 
+# Situation: 3 escenarios with 100 MTS  each one, each MTS containing 4 variables. In each scenario, 
 # the series are generated from a DCC model with different parameters. The mean vector follows, separately for
 # each component, a MA(1) model. This model is the same irrespective of the cluster being considered. The EGarch model
 # for each individual volatillity of univariate time series is the same in all clusters as well 
@@ -124,3 +124,18 @@ for (i in 1 : 20) {
 b <- numeric()
 b <- parLapply(c1, coherencel, kmeans_mc_av_ari_scenario1)
 mean(listTomatrix(b))
+
+
+# Wavelets 
+
+J <- 6 # number of scales (see Table 3, page 45, in D'urso and Maharaj 2012)
+wf <- "d4"
+features <- lapply(cluster, wavelet_features, wf = wf, J = J) 
+dis_matrix <- proxy::dist(features, wave_dist)  
+clustering <- pam(dis_matrix, 3)$cluster
+external_validation(ground_truth, clustering)
+
+
+
+
+
