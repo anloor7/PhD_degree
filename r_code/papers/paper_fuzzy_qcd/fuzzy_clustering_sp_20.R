@@ -2,6 +2,8 @@
 
 # Loading auxiliary functions, data and packages
 
+# Function to compute the QCD-based features
+
 quantile_quantities_re_im <- function(X, levels = seq(0.1, 0.9, 0.4)) {
 
   c <- ncol(X)
@@ -16,6 +18,7 @@ quantile_quantities_re_im <- function(X, levels = seq(0.1, 0.9, 0.4)) {
 
 }
 
+# Function to transform a list of features to a matrix (each feature vector is a row in the matrix)
 
 listTomatrix <- function(l){
   n <- length(l)
