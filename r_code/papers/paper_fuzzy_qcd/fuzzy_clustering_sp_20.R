@@ -86,7 +86,7 @@ for (i in 1 : 20) {
 coherence2 <- listTomatrix(lapply(mts_top_20, quantile_quantities_re_im)) # QCD-features
 p_comp <- prcomp(coherence2) # PCA
 n_p_comp <- ceiling(0.12*min(dim(p_comp$x))) # Selection of principal components
-p_comp_matrix <- data.frame(p_comp$x[, 1 : n_p_comp])
+p_comp_matrix <- data.frame(p_comp$x[, 1 : n_p_comp]) # Computation of PCA-feature matrix
 dis_matrix = proxy::dist(p_comp_matrix) # Computation of distance matrix
 
 
