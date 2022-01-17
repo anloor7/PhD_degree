@@ -2,6 +2,10 @@
 
 # Loading auxiliary functions, data and packages
 
+library(quantspec) # Loading the quantspec package
+library(ggplot2) # Loading the library ggplot2
+library(fclust) # Loading the library fclust
+
 # Function to compute the QCD-based features
 
 quantile_quantities_re_im <- function(X, levels = seq(0.1, 0.9, 0.4)) {
@@ -34,9 +38,7 @@ listTomatrix <- function(l){
 
 load('mts_50.RData') # Loading the 50 first companies of S&P 500 index
 load('vector_names_50.RData') # Loading the corresponding names
-library(quantspec) # Loading the quantspec package
-library(ggplot2) # Loading the library ggplot2
-library(fclust) # Loading the library fclust
+
 
 mts <- mts_50
 vector_names <- vector_names_50
