@@ -3,6 +3,7 @@
 # This is a function to compute the k-means approach through global models and
 # the in-sample error
 
+library(caret)
 
 k_means_global_models_in_sample <- function(series, K, max_lag = 1, niter = 150, model_caret = 'lm',
                                   init = NULL) {
